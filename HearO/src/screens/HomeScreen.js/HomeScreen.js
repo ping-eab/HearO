@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import Tts from "react-native-tts";
 
 export default function HomeScreen() {
   const [text, setText] = useState("");
+
+  const handleSpeak = () => {
+    Tts.speak(text);
+  };
 
   return (
     <View style={styles.container}>
@@ -13,7 +18,7 @@ export default function HomeScreen() {
         value={text}
         onChangeText={setText}
       />
-      <Button title="Speak Text" onPress={() => console.log("TTS triggered")} />
+      <Button title="Speak Text" onPress={handleSpeak} />
     </View>
   );
 }
