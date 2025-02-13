@@ -1,28 +1,33 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HistoryScreen = ({ navigation }) => {
-  const [history, setHistory] = useState([
-    { id: "1", text: "Hello, how are you?" },
-    { id: "2", text: "Can you help me with something?" },
-    { id: "3", text: "Where is the nearest hospital?" },
-  ]);
+const HistoryScreen = () => {
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const storedHistory = await AsyncStorage.getItem("conversationHistory");
+        if (storedHistory) {
+          setHistory(JSON.parse(storedHistory));
+        }
+      } catch (error) {
+        console.error("Failed to load history", error);
+      }
+    };
+
+    fetchHistory();
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Conversation History</Text>
       <FlatList
         data={history}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.historyItem}>
-            <Text>{item.text}</Text>
-          </View>
-        )}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <Text style={styles.historyItem}>{item}</Text>}
       />
-      <TouchableOpacity style={styles.clearButton} onPress={() => setHistory([])}>
-        <Text style={styles.buttonText}>Clear History</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -34,26 +39,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
+    marginBottom: 10,
   },
   historyItem: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  clearButton: {
-    marginTop: 20,
-    backgroundColor: "red",
     padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
 });
 

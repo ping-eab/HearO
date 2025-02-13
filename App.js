@@ -9,6 +9,7 @@ import HistoryScreen from "./src/screens/HistoryScreen";
 
 const Stack = createStackNavigator();
 
+
 const App = () => {
   return (
     <NavigationContainer>

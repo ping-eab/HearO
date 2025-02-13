@@ -1,36 +1,31 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
-import VoiceService from "../services/voice"; // voiceService
+import { View, Text, Button, TextInput, StyleSheet } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = () => {
-  const [spokenText, setSpokenText] = useState("");
+  const [inputText, setInputText] = useState("");
 
-  // Function to handle speech recognition results
-  const handleSpeechResults = (textArray) => {
-    if (textArray && textArray.length > 0) {
-      setSpokenText(textArray[0]); // Get the first recognized phrase
+  const saveMessage = async (message) => {
+    try {
+      const existingHistory = await AsyncStorage.getItem("conversationHistory");
+      const history = existingHistory ? JSON.parse(existingHistory) : [];
+      history.push(message);
+      await AsyncStorage.setItem("conversationHistory", JSON.stringify(history));
+    } catch (error) {
+      console.error("Failed to save message", error);
     }
-  };
-
-  // Start listening for speech
-  const startListening = () => {
-    VoiceService.onSpeechResults = handleSpeechResults;
-    VoiceService.startListening();
-  };
-
-  // Stop listening for speech
-  const stopListening = () => {
-    VoiceService.stopListening();
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Communication Companion</Text>
-      <Text>Recognized Speech: {spokenText}</Text>
-      
-      <Button title="Start Talking" onPress={startListening} />
-      <Button title="Stop Talking" onPress={stopListening} />
-      <Button title="Say 'Hello!'" onPress={() => VoiceService.speak("Hello! How can I assist you?")} />
+      <TextInput
+        style={styles.input}
+        placeholder="Type a message..."
+        value={inputText}
+        onChangeText={setInputText}
+      />
+      <Button title="Send" onPress={() => { saveMessage(inputText); setInputText(""); }} />
     </View>
   );
 };
@@ -38,14 +33,23 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  input: {
+    width: "80%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 5,
   },
 });
 
