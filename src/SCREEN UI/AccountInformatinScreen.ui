@@ -1,0 +1,23 @@
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
+const AccountInformationScreen = () => {
+  return (
+    <View className="flex-1 bg-white p-6">
+      <TouchableOpacity className="mb-4">
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+      <Text className="text-xl font-bold text-gray-800 mb-6">Account Information</Text>
+      <View className="bg-gray-100 p-4 rounded-lg mb-4">
+        <Text className="text-gray-600">Username</Text>
+        <Text className="text-gray-800 font-semibold">User123</Text>
+      </View>
+      <View className="bg-gray-100 p-4 rounded-lg">
+        <Text className="text-gray-600">Password</Text>
+        <Text className="text-gray-800 font-semibold">••••••••</Text>
+      </View>
+    </View>
+  );
+};
+export default AccountInformationScreen;

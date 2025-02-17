@@ -1,0 +1,27 @@
+import React, { useState } from "react";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
+const EnterTextScreen = () => {
+  const [message, setMessage] = useState("");
+
+  return (
+    <View className="flex-1 bg-white p-6">
+      <Text className="text-xl font-bold text-gray-800 mb-6">Enter Text</Text>
+      <View className="border border-gray-300 p-4 rounded-lg mb-4">
+        <TextInput
+          className="text-gray-800 text-lg"
+          placeholder="Type a message..."
+          value={message}
+          onChangeText={setMessage}
+        />
+      </View>
+      <TouchableOpacity className="bg-green-500 p-4 rounded-lg flex-row items-center justify-center">
+        <Ionicons name="send" size={20} color="white" />
+        <Text className="text-white ml-2">Send</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export default EnterText;

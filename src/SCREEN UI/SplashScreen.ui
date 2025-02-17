@@ -1,0 +1,17 @@
+import React from "react";
+import { View, Text } from "react-native";
+
+const SplashScreen = () => {
+    return (
+        <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ width: 96, height: 96, backgroundColor: 'green', borderRadius: 48, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>LOGO</Text>
+            </View>
+            <Text style={{ color: 'gray', fontSize: 18, marginTop: 16, fontWeight: '600' }}>
+                HearO: Your Communication Companion
+            </Text>
+        </View>
+    );
+};
+
+export default SplashScreen;

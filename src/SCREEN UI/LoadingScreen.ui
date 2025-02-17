@@ -1,0 +1,18 @@
+import React from "react";
+import { View, Text, ActivityIndicator } from "react-native";
+
+const LoadingScreen = () => {
+  return (
+    <View className="flex-1 bg-white justify-center items-center">
+      <View className="w-24 h-24 bg-green-400 rounded-full flex justify-center items-center">
+        <Text className="text-white text-lg font-bold">LOGO</Text>
+      </View>
+      <Text className="text-gray-800 text-lg mt-4 font-semibold">
+        HearO: Your Communication Companion
+      </Text>
+      <ActivityIndicator size="large" color="#4CAF50" className="mt-4" />
+    </View>
+  );
+};
+
+export default LoadingScreen;
