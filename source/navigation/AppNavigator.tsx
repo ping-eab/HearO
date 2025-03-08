@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, StackNavigationOptions } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 // Screens
@@ -10,9 +10,19 @@ import HomeScreen from "../screens/HomeScreen";
 import EnterTextScreen from "../screens/EnterTextScreen";
 import RecordAudioScreen from "../screens/RecordAudioScreen";
 
-const Stack = createStackNavigator();
+// Define the navigation param list
+type RootStackParamList = {
+  Splash: undefined;
+  LoginRegister: undefined;
+  Login: undefined;
+  Home: undefined;
+  EnterText: undefined;
+  RecordAudio: undefined;
+};
 
-const AppNavigator = () => {
+const Stack = createStackNavigator<RootStackParamList>();
+
+const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash">
@@ -20,7 +30,7 @@ const AppNavigator = () => {
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false } as StackNavigationOptions}
         />
 
         {/* Combined Login Screens */}
