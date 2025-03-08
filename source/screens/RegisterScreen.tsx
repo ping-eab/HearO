@@ -1,13 +1,25 @@
-// RegisterScreen.js (basic example)
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const RegisterScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+// Define navigation types
+type RootStackParamList = {
+  Login: undefined;
+};
+
+type RegisterScreenProps = NativeStackScreenProps<RootStackParamList, "Login">;
+
+const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleRegister = () => {
-    // Implement your registration logic here
     console.log("Register user:", email, password);
     navigation.navigate("Login");
   };
