@@ -1,26 +1,53 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const AppContext = createContext();
+// Define types for context
+interface UserSettings {
+  theme: string;
+  fontSize: string;
+  voice: string;
+}
 
-export const AppProvider = ({ children }) => {
-  // User settings remain the same
-  const [userSettings, setUserSettings] = useState({
+interface Conversation {
+  id: string;
+  text: string;
+  timestamp: string;
+}
+
+interface AppContextType {
+  userSettings: UserSettings;
+  setUserSettings: React.Dispatch<React.SetStateAction<UserSettings>>;
+  conversationHistory: Conversation[];
+  setConversationHistory: React.Dispatch<React.SetStateAction<Conversation[]>>;
+  addConversation: (text: string) => Promise<void>;
+}
+
+// Create context with initial undefined value
+export const AppContext = createContext<AppContextType | undefined>(undefined);
+
+// Define props for AppProvider
+interface AppProviderProps {
+  children: ReactNode;
+}
+
+export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+  // User settings state
+  const [userSettings, setUserSettings] = useState<UserSettings>({
     theme: "light",
     fontSize: "medium",
     voice: "default",
   });
 
-  // Conversation history is initially empty
-  const [conversationHistory, setConversationHistory] = useState([]);
+  // Conversation history state
+  const [conversationHistory, setConversationHistory] = useState<Conversation[]>([]);
 
-  // 1) Load conversationHistory from AsyncStorage on app startup
+  // Load conversationHistory from AsyncStorage on app startup
   useEffect(() => {
     const loadConversations = async () => {
       try {
         const storedData = await AsyncStorage.getItem("@conversationHistory");
         if (storedData) {
-          setConversationHistory(JSON.parse(storedData));
+          setConversationHistory(JSON.parse(storedData) as Conversation[]);
         }
       } catch (error) {
         console.log("Error loading conversation history:", error);
@@ -30,9 +57,9 @@ export const AppProvider = ({ children }) => {
     loadConversations();
   }, []);
 
-  // 2) Add a new conversation/transcript
-  const addConversation = async (text) => {
-    const newItem = {
+  // Add a new conversation/transcript
+  const addConversation = async (text: string): Promise<void> => {
+    const newItem: Conversation = {
       id: (conversationHistory.length + 1).toString(),
       text,
       timestamp: new Date().toISOString(),
@@ -42,10 +69,7 @@ export const AppProvider = ({ children }) => {
     setConversationHistory(updated);
 
     try {
-      await AsyncStorage.setItem(
-        "@conversationHistory",
-        JSON.stringify(updated)
-      );
+      await AsyncStorage.setItem("@conversationHistory", JSON.stringify(updated));
     } catch (error) {
       console.log("Error saving conversation history:", error);
     }
