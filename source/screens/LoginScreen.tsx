@@ -5,34 +5,37 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
 } from "react-native";
-// If you plan to store user data in context:
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppContext } from "../context/AppContext";
 
-const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
-  // If you want to store user data in context:
+// Define navigation props (adjust stack names if needed)
+type RootStackParamList = {
+  Home: undefined;
+  Register: undefined;
+};
+
+type LoginScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
+
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const { setUserSettings } = useContext(AppContext);
 
   const handleLogin = () => {
-    // Simple validation example:
-    if (email.trim() === "" || password.trim() === "") {
+    if (!email.trim() || !password.trim()) {
       Alert.alert("Error", "Please enter both email and password.");
       return;
     }
 
-    // Mock user validation (replace with real auth logic)
     if (email === "test@example.com" && password === "password") {
-      // If using context to store user info, you could do something like:
-      setUserSettings((prev) => ({
+      setUserSettings((prev: any) => ({
         ...prev,
         userEmail: email,
       }));
 
-      // Navigate to Home screen after successful login
       navigation.navigate("Home");
     } else {
       Alert.alert("Error", "Invalid credentials. Try again.");
@@ -62,7 +65,11 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity
+        style={[styles.loginButton, email && password ? null : styles.disabledButton]}
+        onPress={handleLogin}
+        disabled={!email || !password}
+      >
         <Text style={styles.loginButtonText}>Log In</Text>
       </TouchableOpacity>
 
@@ -99,9 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 16,
     color: "#333",
-    // Shadow on Android
     elevation: 2,
-    // Shadow on iOS
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
@@ -112,6 +117,9 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
+  },
+  disabledButton: {
+    backgroundColor: "#ccc",
   },
   loginButtonText: {
     color: "#fff",
