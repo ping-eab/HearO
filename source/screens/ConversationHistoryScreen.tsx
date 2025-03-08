@@ -2,10 +2,19 @@ import React, { useContext } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { AppContext } from "../context/AppContext";
 
-const ConversationHistoryScreen = () => {
-  const { conversationHistory } = useContext(AppContext);
+// Define the shape of a conversation history item
+interface ConversationItem {
+  id: string;
+  text: string;
+  timestamp: string;
+}
 
-  const renderItem = ({ item }) => (
+const ConversationHistoryScreen: React.FC = () => {
+  const { conversationHistory } = useContext(AppContext) as {
+    conversationHistory: ConversationItem[];
+  };
+
+  const renderItem = ({ item }: { item: ConversationItem }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemText}>{item.text}</Text>
       <Text style={styles.timestamp}>{item.timestamp}</Text>
