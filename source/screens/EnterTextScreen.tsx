@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Make sure you have @expo/vector-icons installed
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // Ensure you have @expo/vector-icons installed
 
-const EnterTextScreen = () => {
-  const [text, setText] = useState("");
+const EnterTextScreen: React.FC = () => {
+  const [text, setText] = useState<string>("");
 
   const handleSend = () => {
     console.log("Sent:", text);
@@ -20,8 +26,16 @@ const EnterTextScreen = () => {
           value={text}
           onChangeText={setText}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-          <Ionicons name="send" size={24} color="white" />
+        <TouchableOpacity
+          style={styles.sendButton}
+          onPress={handleSend}
+          disabled={text.trim().length === 0} // Prevent sending empty text
+        >
+          <Ionicons
+            name="send"
+            size={24}
+            color={text.trim().length === 0 ? "#bbb" : "white"} // Dim color if disabled
+          />
         </TouchableOpacity>
       </View>
     </View>
