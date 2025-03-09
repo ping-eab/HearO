@@ -6,12 +6,19 @@ import {
   StyleSheet,
   Button,
 } from "react-native";
-import Record from "../Record";
-import { useTheme } from "../../context/ThemeContext"; // ✅ Import ThemeContext
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import Record from "../Record"; 
+import { useTheme } from "../../context/ThemeContext"; // Import ThemeContext
+
+// Define the navigation type for type safety
+type RootStackParamList = {
+  "ASL Converter": undefined;
+};
 
 export default function Home() {
   const [speechText, setSpeechText] = useState("");
-  const { theme, toggleTheme } = useTheme(); // ✅ Get theme & toggle function
+  const { theme, toggleTheme } = useTheme(); // Get theme & toggle function
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>(); // Typed navigation hook
 
   return (
     <View
@@ -50,6 +57,7 @@ export default function Home() {
           ]}
           numberOfLines={6}
           value={speechText}
+          onChangeText={(text) => setSpeechText(text)} //  Added missing state update
           maxLength={500}
           editable={true}
         />
@@ -79,6 +87,15 @@ export default function Home() {
           onSpeechStart={() => {
             setSpeechText("");
           }}
+        />
+      </View>
+
+      {/* Navigate to ASL Converter */}
+      <View style={{ marginTop: 20 }}>
+        <Button
+          title="ASL Converter"
+          color={theme === "dark" ? "#FFA500" : "#007AFF"}
+          onPress={() => navigation.navigate("ASL Converter")}
         />
       </View>
     </View>

@@ -1,20 +1,12 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Appearance } from "react-native";
+import React, { createContext, useState, useContext } from "react";
 
-// ✅ Define the type for our context data
-interface ThemeContextType {
-  theme: "light" | "dark";
-  toggleTheme: () => void;
-}
+const ThemeContext = createContext<any>(null);
 
-// ✅ Create the context with a default undefined value
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<"light" | "dark">(Appearance.getColorScheme() || "light");
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -22,12 +14,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       {children}
     </ThemeContext.Provider>
   );
-}
+};
 
-export function useTheme(): ThemeContextType {
+export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
-}
+};
