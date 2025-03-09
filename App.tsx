@@ -17,10 +17,10 @@ function MainNavigator() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
-          let iconName = "record";
+          let iconName = "Record";
           if (route.name === "Record") {
             iconName = "record-vinyl";
-          } else if (route.name === "History") {
+          } else if (route.name === "Conversation History") {
             iconName = "history";
           } else if (route.name === "ASL Converter") {
             iconName = "sign-language"; // Uses a sign-related icon
@@ -35,7 +35,7 @@ function MainNavigator() {
       })}
     >
       <Tab.Screen name="HearO:Your Communication Companion" component={Home} />
-      <Tab.Screen name="HearO:Your Communication Companion" component={Notes} />
+      <Tab.Screen name="Conversation History" component={Notes} />
       <Tab.Screen name="ASL Converter" component={ASLConverter} />
     </Tab.Navigator>
   );
