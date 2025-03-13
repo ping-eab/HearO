@@ -17,9 +17,9 @@ function MainNavigator() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => {
-          let iconName = "Record";
+          let iconName = "record-vinyl";
           if (route.name === "Record") {
-            iconName = "record-vinyl";
+            iconName = "backward"; // Uses a record-related icon
           } else if (route.name === "Conversation History") {
             iconName = "history";
           } else if (route.name === "ASL Converter") {
